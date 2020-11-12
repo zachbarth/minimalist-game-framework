@@ -1,0 +1,1 @@
+Place your assets (textures, sounds, and fonts) in this directory and they will be automatically copied when making builds.
