@@ -56,11 +56,14 @@ class Game
         Bounds2 knightFrameBounds = new Bounds2(((int)knightFrameIndex) * 16, knightIdle ? 0 : 16, 16, 16);
 
         // Draw the knight:
+        Vector2 knightDrawPos = knightPosition + new Vector2(-8, -8);
         TextureMirror knightMirror = knightFaceLeft ? TextureMirror.Horizontal : TextureMirror.None;
-        Engine.DrawTexture(texKnight, knightPosition + new Vector2(-8, -8), source: knightFrameBounds, mirror: knightMirror);
+        Engine.DrawTexture(texKnight, knightDrawPos, source: knightFrameBounds, mirror: knightMirror);
     }
 }
 ```
+
+Art Source: _[https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack](https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack)_
 
 # Core #
 
