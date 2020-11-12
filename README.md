@@ -6,11 +6,11 @@ This is a minimalist game framework in the style of the "game engine" we use at 
 
 1. Clone the repo.
 2. Add your assets (images, fonts, sounds, and music) to the Assets folder. These file will be automatically synchronized to your build directory by a post-build step in Visual Studio.
-3. Start writing your game in the `Game` class. The API is stateless and static within the `Engine` class, making it easy to call it from anywhere in your code.
+3. Start writing your game in the `Game` class. The API is stateless and static within the `Engine` class.
 
 All functions and properties listed below are members of the static `Engine` class. For example, if you wanted to draw a line, you could call `Engine.DrawLine()` from anywhere in your code.
 
-Documentation for the arguments to functions can be found in the code itself, along with explanations of enums and their values.
+Documentation for function arguments and enum values can be found in the code itself.
 
 # Core #
 
@@ -22,23 +22,29 @@ Documentation for the arguments to functions can be found in the code itself, al
 
 `Texture LoadTexture(string path)`
 
-* Loads a texture from the Assets directory. Supports the following formats: BMP, GIF, JPEG, PNG, SVG, TGA, TIFF, WEBP.
+* Loads a texture from the Assets directory. 
+* Supports the following formats: BMP, GIF, JPEG, PNG, SVG, TGA, TIFF, WEBP.
 
 `ResizableTexture LoadResizableTexture(string path, int leftOffset, int rightOffset, int topOffset, int bottomOffset)`
 
-* Loads a resizable texture from the Assets directory. Supports the following formats: BMP, GIF, JPEG, PNG, SVG, TGA, TIFF, WEBP.
+* Loads a resizable texture from the Assets directory. 
+* Supports the following formats: BMP, GIF, JPEG, PNG, SVG, TGA, TIFF, WEBP.
+* See below for an explanation of how resizable textures work.
 
 `Font LoadFont(string path, int pointSize)`
 
-* Loads a font from the Assets directory for a single text size. Supports the following formats: TTF, FON.
+* Loads a font from the Assets directory for a single text size.
+* Supports the following formats: TTF, FON.
 
 `Sound LoadSound(string path)`
 
-* Loads a sound file from the Assets directory. Supports the following formats: WAV, OGG.
+* Loads a sound file from the Assets directory. 
+* Supports the following formats: WAV, OGG.
 
 `Music LoadMusic(string path)`
 
-* Loads a music file from the Assets directory. Supports the following formats: WAV, OGG, MP3, FLAC.
+* Loads a music file from the Assets directory. 
+* Supports the following formats: WAV, OGG, MP3, FLAC.
 
 # Graphics #
 
@@ -57,7 +63,7 @@ Documentation for the arguments to functions can be found in the code itself, al
 `void DrawTexture(Texture texture, Vector2 position, Color? color, Vector2? size, float rotation, Vector2? pivot, TextureMirror mirror, Bounds2? source, TextureBlendMode blendMode, TextureScaleMode scaleMode`
 
 * Draws a texture.
-* Look at the code for more information about this overwhelming number of arguments. Most of them are completely optional.
+* Look at the code for more information about the function arguments. Most of them are optional.
 
 `void DrawResizableTexture(ResizableTexture texture, Bounds2 bounds, Color? color, TextureBlendMode blendMode, TextureScaleMode scaleMode)`
 
@@ -66,7 +72,8 @@ Documentation for the arguments to functions can be found in the code itself, al
 
 `Bounds2 DrawString(string text, Vector2 position, Color color, Font font, TextAlignment alignment, bool measureOnly)`
 
-* Draws a text string. Returns the bounds of the drawn text.
+* Draws a text string. 
+* Returns the bounds of the drawn text.
 
 # Keyboard Input #
 
@@ -170,7 +177,7 @@ Documentation for the arguments to functions can be found in the code itself, al
 `class Color`
 
 * A data structure representing a 32-bit RGBA color that is used in many API functions. 
-* The class also contains static members for all of the built-in .NET colors, e.g. Color.CornflowerBlue and many others.
+* The class also contains static members for all of the built-in .NET colors, e.g. Color.CornflowerBlue and others.
 
 # Appendix 1: Screen Resolution #
 
@@ -178,14 +185,14 @@ For simplicity sake, the resolution of the game is fixed and specified at the to
 
 If you hit Alt+Enter while the game is running it will toggle between windowed and fullscreen:
 * When running windowed the window will be the same size as the specified resolution. 
-* When running fullscreen the game will scale up to fit your screen, and will automatically letterbox if the aspect ratios do not match.
+* When running fullscreen the game will scale up to fit your screen, and will automatically letterbox if the aspect ratios do not match so that the contents are not distorted.
 
 # Appendix 2: Resizable Textures #
 
-Most of the asset types supported are straight forward, but support is also included for something ambiguously called a "resizable texture". Sometimes also called "nine-patches" or "border textures", these are textures that are divided into nine areas (specified at load time as numerical offsets from the edges) so that they can be drawn at different sizes without distorting the edges. The following example shows a resizable texture for a button created and drawn with the following code:
+Most of the asset types supported should be fairly obvious, but this framework also supports something ambiguously called a "resizable texture". Sometimes also called "nine-patches" or "border textures", these are textures that are divided into nine areas (specified at load time as numerical offsets from the edges) so that they can be drawn at different sizes without distorting the edges. The following example shows a resizable texture for a button created and drawn with the following code:
 
 ```
-ResizableTexture button = Engine.LoadResizableTexture("button.png", 0, 0, 0, 0);`
+ResizableTexture button = Engine.LoadResizableTexture("button.png", 20, 20, 20, 40);`
 Engine.DrawResizableTexture(button, new Bounds2(10, 40, 50, 80));
 Engine.DrawResizableTexture(button, new Bounds2(70, 20, 100, 60));
 Engine.DrawResizableTexture(button, new Bounds2(180, 10, 70, 100));
