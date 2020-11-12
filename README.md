@@ -5,12 +5,10 @@ This is a minimalist game framework in the style of the "game engine" we use at 
 # Getting Started #
 
 1. Clone the repo.
-2. Add your assets (images, fonts, sounds, and music) to the Assets folder. These file will be automatically synchronized to your build directory by a post-build step in Visual Studio.
-3. Start writing your game in the `Game` class. The API is stateless and static within the `Engine` class.
+2. Add your assets (images, fonts, sounds, and music) to the Assets folder. These files will be automatically synchronized to your build directory by a post-build step in Visual Studio.
+3. Start writing your game in the `Game` class.
 
-ll **functions** and properties listed below are members of the static `Engine` class. For example, if you wanted to draw a line, you could call `Engine.DrawLine()` from anywhere in your code
-
-Documentation for function arguments and enum values can be found in the code itself.
+All functions and properties listed below are members of the static `Engine` class. For example, if you wanted to draw a line, you could call `Engine.DrawLine()` from anywhere in your code. Documentation for function arguments and enum values can be found in the code itself.
 
 # Core #
 
@@ -177,19 +175,19 @@ class **Bounds2**
 class **Color**
 
 * A data structure representing a 32-bit RGBA color that is used in many API functions. 
-* The class also contains static members for all of the built-in .NET colors, e.g. Color.CornflowerBlue and others.
+* The class also contains static members for all of the built-in .NET colors, e.g. `Color.CornflowerBlue` and others.
 
 # Appendix 1: Screen Resolution #
 
-For simplicity sake, the resolution of the game is fixed and specified at the top of the `Game` class. 
+To keep things simple, the resolution of the game is fixed and specified at the top of the `Game` class. 
 
-If you hit Alt+Enter while the game is running it will toggle between windowed and fullscreen:
+If you hit Alt+Enter while the game is running it will toggle between windowed and fullscreen.
 * When running windowed the window will be the same size as the specified resolution. 
-* When running fullscreen the game will scale up to fit your screen, and will automatically letterbox if the aspect ratios do not match so that the contents are not distorted.
+* When running fullscreen the game will scale up to fit your screen and automatically letterbox if the aspect ratios do not match (so that the contents are not distorted).
 
 # Appendix 2: Resizable Textures #
 
-Most of the asset types supported should be fairly obvious, but this framework also supports something ambiguously called a "resizable texture". Sometimes also called "nine-patches" or "border textures", these are textures that are divided into nine areas (specified at load time as numerical offsets from the edges) so that they can be drawn at different sizes without distorting the edges. The following example shows a resizable texture for a button created and drawn with the following code:
+Most of the asset types supported should be fairly obvious, but the framework also supports something ambiguously called a "resizable texture". Sometimes also called "nine-patches" or "border textures", these are textures that are divided into nine areas (specified at load time as numerical offsets from the edges) so that they can be drawn at different sizes without distorting the edges. The following example creates a resizable texture of a button and then draws it four times with different sizes:
 
 ```C#
 ResizableTexture button = Engine.LoadResizableTexture("button.png", 20, 20, 20, 40);
