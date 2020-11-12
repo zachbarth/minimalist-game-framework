@@ -10,169 +10,221 @@ This is a minimalist game framework in the style of the "game engine" we use at 
 
 All functions and properties listed below are members of the static `Engine` class. For example, if you wanted to draw a line, you could call `Engine.DrawLine()` from anywhere in your code. Documentation for function arguments and enum values can be found in the code itself.
 
+# Example #
+
+![Resizable Textures Example](Docs/example-game.gif)
+
+```C#
+class Game
+{
+    public static readonly string Title = "Minimalist Game Framework";
+    public static readonly Vector2 Resolution = new Vector2(128, 128);
+
+    // Define some constants controlling animation speed:
+    static readonly float Framerate = 10;
+    static readonly float WalkSpeed = 50;
+
+    // Load some textures when the game starts:
+    Texture texKnight = Engine.LoadTexture("knight.png");
+    Texture texBackground = Engine.LoadTexture("background.png");
+
+    // Keep track of the knight's state:
+    Vector2 knightPosition = Resolution / 2;
+    bool knightFaceLeft = false;
+    float knightFrameIndex = 0;
+
+    public Game()
+    {
+    }
+
+    public void Update()
+    {
+        // Draw the background:
+        Engine.DrawTexture(texBackground, Vector2.Zero);
+        
+        // Use the gamepad to control the knight, with a small "deadzone" applied to the analog stick:
+        Vector2 leftStick = Engine.GetGamepadAxis(0, GamepadAxis.LeftStick);
+        bool knightIdle = leftStick.Length() < 0.3f;
+        if (!knightIdle)
+        {
+            knightPosition += leftStick * Engine.TimeDelta * WalkSpeed;
+            knightFaceLeft = leftStick.X < 0;
+        }
+
+        // Advance through the knight's 6-frame animation and select the current frame:
+        knightFrameIndex = (knightFrameIndex + Engine.TimeDelta * Framerate) % 6.0f;
+        Bounds2 knightFrameBounds = new Bounds2(((int)knightFrameIndex) * 16, knightIdle ? 0 : 16, 16, 16);
+
+        // Draw the knight:
+        TextureMirror knightMirror = knightFaceLeft ? TextureMirror.Horizontal : TextureMirror.None;
+        Engine.DrawTexture(texKnight, knightPosition + new Vector2(-8, -8), source: knightFrameBounds, mirror: knightMirror);
+    }
+}
+```
+
 # Core #
 
-float **TimeDelta**
+float **`TimeDelta`**
 
 * The amount of time (in seconds) since the last frame.
 
 # Content #
 
-Texture **LoadTexture**(string path)
+Texture **`LoadTexture`**(string path)
 
 * Loads a texture from the Assets directory. 
 * Supports the following formats: BMP, GIF, JPEG, PNG, SVG, TGA, TIFF, WEBP.
 
-ResizableTexture **LoadResizableTexture**(string path, int leftOffset, int rightOffset, int topOffset, int bottomOffset)
+ResizableTexture **`LoadResizableTexture`**(string path, int leftOffset, int rightOffset, int topOffset, int bottomOffset)
 
 * Loads a resizable texture from the Assets directory. 
 * Supports the following formats: BMP, GIF, JPEG, PNG, SVG, TGA, TIFF, WEBP.
 * See below for an explanation of how resizable textures work.
 
-Font **LoadFont**(string path, int pointSize)
+Font **`LoadFont`**(string path, int pointSize)
 
 * Loads a font from the Assets directory for a single text size.
 * Supports the following formats: TTF, FON.
 
-Sound **LoadSound**(string path)
+Sound **`LoadSound`**(string path)
 
 * Loads a sound file from the Assets directory. 
 * Supports the following formats: WAV, OGG.
 
-Music **LoadMusic**(string path)
+Music **`LoadMusic`**(string path)
 
 * Loads a music file from the Assets directory. 
 * Supports the following formats: WAV, OGG, MP3, FLAC.
 
 # Graphics #
 
-void **DrawLine**(Vector2 start, Vector2 end, Color color)
+void **`DrawLine`**(Vector2 start, Vector2 end, Color color)
 
 * Draws a line.
 
-void **DrawRectEmpty**(Bounds2 bounds, Color color)
+void **`DrawRectEmpty`**(Bounds2 bounds, Color color)
 
 * Draws an empty rectangle.
 
-void **DrawRectSolid**(Bounds2 bounds, Color color)
+void **`DrawRectSolid`**(Bounds2 bounds, Color color)
 
 * Draws a solid rectangle.
 
-void **DrawTexture**(Texture texture, Vector2 position, Color? color, Vector2? size, float rotation, Vector2? pivot, TextureMirror mirror, Bounds2? source, TextureBlendMode blendMode, TextureScaleMode scaleMode)
+void **`DrawTexture`**(Texture texture, Vector2 position, Color? color, Vector2? size, float rotation, Vector2? pivot, TextureMirror mirror, Bounds2? source, TextureBlendMode blendMode, TextureScaleMode scaleMode)
 
 * Draws a texture.
 * Look at the code for more information about the function arguments. Most of them are optional.
 
-void **DrawResizableTexture**(ResizableTexture texture, Bounds2 bounds, Color? color, TextureBlendMode blendMode, TextureScaleMode scaleMode)
+void **`DrawResizableTexture`**(ResizableTexture texture, Bounds2 bounds, Color? color, TextureBlendMode blendMode, TextureScaleMode scaleMode)
 
 * Draws a resizable texture.
 * See below for an explanation of how resizable textures work.
 
-Bounds2 **DrawString**(string text, Vector2 position, Color color, Font font, TextAlignment alignment, bool measureOnly)
+Bounds2 **`DrawString`**(string text, Vector2 position, Color color, Font font, TextAlignment alignment, bool measureOnly)
 
 * Draws a text string. 
 * Returns the bounds of the drawn text.
 
 # Keyboard Input #
 
-bool **GetKeyDown**(Key key, bool allowAutorepeat)
+bool **`GetKeyDown`**(Key key, bool allowAutorepeat)
 
 * Returns true if a key was pressed down this frame.
 
-bool **GetKeyHeld**(Key key)
+bool **`GetKeyHeld`**(Key key)
 
 * Returns true if a key was held during this frame.
 
-bool **GetKeyUp**(Key key)
+bool **`GetKeyUp`**(Key key)
 
 * Returns true if a key was released this frame.
 
-string **TypedText**
+string **`TypedText`**
 
 * The textual representation of the keys that were pressed this frame.
 
 # Mouse Input #
 
-Vector2 **MousePosition**
+Vector2 **`MousePosition`**
 
 * The current position of the mouse cursor (in pixels).
 
-Vector2 **MouseMotion**
+Vector2 **`MouseMotion`**
 
 * The change in position of the mouse cursor this frame (in pixels).
 
-float **MouseScroll**
+float **`MouseScroll`**
 
 * The amount the mouse wheel has been scrolled this frame (in scroll units).
 
-bool **GetMouseButtonDown**(MouseButton button)
+bool **`GetMouseButtonDown`**(MouseButton button)
 
 * Returns true if a mouse button was pressed down this frame.
 
-bool **GetMouseButtonHeld**(MouseButton button)
+bool **`GetMouseButtonHeld`**(MouseButton button)
 
 * Returns true if a mouse button was held during this frame.
 
-bool **GetMouseButtonUp**(MouseButton button)
+bool **`GetMouseButtonUp`**(MouseButton button)
 
 * Returns true if a mouse button was released this frame.
 
-void **SetMouseMode**(MouseMode mode)
+void **`SetMouseMode`**(MouseMode mode)
 
 * Sets the mouse mode, which controls the visibility and lock state of the cursor.
 
 # Gamepad Input #
 
-bool **GetGamepadConnected**(int player)
+bool **`GetGamepadConnected`**(int player)
 
 * Returns true if a player's gamepad is connected.
 
-Vector2 **GetGamepadAxis**(int player, GamepadAxis axis)
+Vector2 **`GetGamepadAxis`**(int player, GamepadAxis axis)
 
 * Reads the analog values of the specified axis on a player's gamepad.
 
-bool **GetGamepadButtonDown**(int player, GamepadButton button)
+bool **`GetGamepadButtonDown`**(int player, GamepadButton button)
 
 * Returns true if a gamepad button was pressed down this frame.
 
-bool **GetGamepadButtonHeld**(int player, GamepadButton button)
+bool **`GetGamepadButtonHeld`**(int player, GamepadButton button)
 
 * Returns true if a gamepad button was held during this frame.
 
-bool **GetGamepadButtonUp**(int player, GamepadButton button)
+bool **`GetGamepadButtonUp`**(int player, GamepadButton button)
 
 * Returns true if a gamepad button was released this frame.
 
 # Audio #
 
-SoundInstance **PlaySound**(Sound sound, bool repeat, float fadeTime)
+SoundInstance **`PlaySound`**(Sound sound, bool repeat, float fadeTime)
 
 * Plays a sound.
 * Returns an instance handle that can be passed to StopSound() to stop playback of the sound.
 
-void **StopSound**(SoundInstance instance, float fadeTime)
+void **`StopSound`**(SoundInstance instance, float fadeTime)
 
 * Stops a playing sound.
 
-void **PlayMusic**(Music music, bool looping, float fadeTime)
+void **`PlayMusic`**(Music music, bool looping, float fadeTime)
 
 * Plays music, stopping any currently playing music first.
 
-void **StopMusic**(float fadeTime)
+void **`StopMusic`**(float fadeTime)
 
 * Stops the current music.
 
 # Utility Classes #
 
-class **Vector2**
+class **`Vector2`**
 
 * A simple 2D vector class that supports basic vector math operations that is used in many API functions.
 
-class **Bounds2**
+class **`Bounds2`**
 
 * A simple axis-aligned 2D bounding rectangle that is used in a few API functions.
 
-class **Color**
+class **`Color`**
 
 * A data structure representing a 32-bit RGBA color that is used in many API functions. 
 * The class also contains static members for all of the built-in .NET colors, e.g. `Color.CornflowerBlue` and others.
@@ -197,4 +249,4 @@ Engine.DrawResizableTexture(button, new Bounds2(180, 10, 70, 100));
 Engine.DrawResizableTexture(button, new Bounds2(260, 30, 120, 90));
 ```
 
-![Resizable Textures Example](resizable-textures-example.png)
+![Resizable Textures Example](Docs/resizable-textures.png)
