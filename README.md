@@ -8,173 +8,173 @@ This is a minimalist game framework in the style of the "game engine" we use at 
 2. Add your assets (images, fonts, sounds, and music) to the Assets folder. These file will be automatically synchronized to your build directory by a post-build step in Visual Studio.
 3. Start writing your game in the `Game` class. The API is stateless and static within the `Engine` class.
 
-All functions and properties listed below are members of the static `Engine` class. For example, if you wanted to draw a line, you could call `Engine.DrawLine()` from anywhere in your code.
+ll **functions** and properties listed below are members of the static `Engine` class. For example, if you wanted to draw a line, you could call `Engine.DrawLine()` from anywhere in your code
 
 Documentation for function arguments and enum values can be found in the code itself.
 
 # Core #
 
-`float TimeDelta`
+float **TimeDelta**
 
 * The amount of time (in seconds) since the last frame.
 
 # Content #
 
-`Texture LoadTexture(string path)`
+Texture **LoadTexture**(string path)
 
 * Loads a texture from the Assets directory. 
 * Supports the following formats: BMP, GIF, JPEG, PNG, SVG, TGA, TIFF, WEBP.
 
-`ResizableTexture LoadResizableTexture(string path, int leftOffset, int rightOffset, int topOffset, int bottomOffset)`
+ResizableTexture **LoadResizableTexture**(string path, int leftOffset, int rightOffset, int topOffset, int bottomOffset)
 
 * Loads a resizable texture from the Assets directory. 
 * Supports the following formats: BMP, GIF, JPEG, PNG, SVG, TGA, TIFF, WEBP.
 * See below for an explanation of how resizable textures work.
 
-`Font LoadFont(string path, int pointSize)`
+Font **LoadFont**(string path, int pointSize)
 
 * Loads a font from the Assets directory for a single text size.
 * Supports the following formats: TTF, FON.
 
-`Sound LoadSound(string path)`
+Sound **LoadSound**(string path)
 
 * Loads a sound file from the Assets directory. 
 * Supports the following formats: WAV, OGG.
 
-`Music LoadMusic(string path)`
+Music **LoadMusic**(string path)
 
 * Loads a music file from the Assets directory. 
 * Supports the following formats: WAV, OGG, MP3, FLAC.
 
 # Graphics #
 
-`void DrawLine(Vector2 start, Vector2 end, Color color)`
+void **DrawLine**(Vector2 start, Vector2 end, Color color)
 
 * Draws a line.
 
-`void DrawRectEmpty(Bounds2 bounds, Color color)`
+void **DrawRectEmpty**(Bounds2 bounds, Color color)
 
 * Draws an empty rectangle.
 
-`void DrawRectSolid(Bounds2 bounds, Color color)`
+void **DrawRectSolid**(Bounds2 bounds, Color color)
 
 * Draws a solid rectangle.
 
-`void DrawTexture(Texture texture, Vector2 position, Color? color, Vector2? size, float rotation, Vector2? pivot, TextureMirror mirror, Bounds2? source, TextureBlendMode blendMode, TextureScaleMode scaleMode`
+void **DrawTexture**(Texture texture, Vector2 position, Color? color, Vector2? size, float rotation, Vector2? pivot, TextureMirror mirror, Bounds2? source, TextureBlendMode blendMode, TextureScaleMode scaleMode)
 
 * Draws a texture.
 * Look at the code for more information about the function arguments. Most of them are optional.
 
-`void DrawResizableTexture(ResizableTexture texture, Bounds2 bounds, Color? color, TextureBlendMode blendMode, TextureScaleMode scaleMode)`
+void **DrawResizableTexture**(ResizableTexture texture, Bounds2 bounds, Color? color, TextureBlendMode blendMode, TextureScaleMode scaleMode)
 
 * Draws a resizable texture.
 * See below for an explanation of how resizable textures work.
 
-`Bounds2 DrawString(string text, Vector2 position, Color color, Font font, TextAlignment alignment, bool measureOnly)`
+Bounds2 **DrawString**(string text, Vector2 position, Color color, Font font, TextAlignment alignment, bool measureOnly)
 
 * Draws a text string. 
 * Returns the bounds of the drawn text.
 
 # Keyboard Input #
 
-`bool GetKeyDown(Key key, bool allowAutorepeat)`
+bool **GetKeyDown**(Key key, bool allowAutorepeat)
 
 * Returns true if a key was pressed down this frame.
 
-`bool GetKeyHeld(Key key)`
+bool **GetKeyHeld**(Key key)
 
 * Returns true if a key was held during this frame.
 
-`bool GetKeyUp(Key key)`
+bool **GetKeyUp**(Key key)
 
 * Returns true if a key was released this frame.
 
-`string TypedText`
+string **TypedText**
 
 * The textual representation of the keys that were pressed this frame.
 
 # Mouse Input #
 
-`Vector2 MousePosition`
+Vector2 **MousePosition**
 
 * The current position of the mouse cursor (in pixels).
 
-`Vector2 MouseMotion`
+Vector2 **MouseMotion**
 
 * The change in position of the mouse cursor this frame (in pixels).
 
-`float MouseScroll`
+float **MouseScroll**
 
 * The amount the mouse wheel has been scrolled this frame (in scroll units).
 
-`bool GetMouseButtonDown(MouseButton button)`
+bool **GetMouseButtonDown**(MouseButton button)
 
 * Returns true if a mouse button was pressed down this frame.
 
-`bool GetMouseButtonHeld(MouseButton button)`
+bool **GetMouseButtonHeld**(MouseButton button)
 
 * Returns true if a mouse button was held during this frame.
 
-`bool GetMouseButtonUp(MouseButton button)`
+bool **GetMouseButtonUp**(MouseButton button)
 
 * Returns true if a mouse button was released this frame.
 
-`void SetMouseMode(MouseMode mode)`
+void **SetMouseMode**(MouseMode mode)
 
 * Sets the mouse mode, which controls the visibility and lock state of the cursor.
 
 # Gamepad Input #
 
-`bool GetGamepadConnected(int player)`
+bool **GetGamepadConnected**(int player)
 
 * Returns true if a player's gamepad is connected.
 
-`Vector2 GetGamepadAxis(int player, GamepadAxis axis)`
+Vector2 **GetGamepadAxis**(int player, GamepadAxis axis)
 
 * Reads the analog values of the specified axis on a player's gamepad.
 
-`bool GetGamepadButtonDown(int player, GamepadButton button)`
+bool **GetGamepadButtonDown**(int player, GamepadButton button)
 
 * Returns true if a gamepad button was pressed down this frame.
 
-`bool GetGamepadButtonHeld(int player, GamepadButton button)`
+bool **GetGamepadButtonHeld**(int player, GamepadButton button)
 
 * Returns true if a gamepad button was held during this frame.
 
-`bool GetGamepadButtonUp(int player, GamepadButton button)`
+bool **GetGamepadButtonUp**(int player, GamepadButton button)
 
 * Returns true if a gamepad button was released this frame.
 
 # Audio #
 
-`SoundInstance PlaySound(Sound sound, bool repeat, float fadeTime)`
+SoundInstance **PlaySound**(Sound sound, bool repeat, float fadeTime)
 
 * Plays a sound.
 * Returns an instance handle that can be passed to StopSound() to stop playback of the sound.
 
-`void StopSound(SoundInstance instance, float fadeTime)`
+void **StopSound**(SoundInstance instance, float fadeTime)
 
 * Stops a playing sound.
 
-`void PlayMusic(Music music, bool looping, float fadeTime)`
+void **PlayMusic**(Music music, bool looping, float fadeTime)
 
 * Plays music, stopping any currently playing music first.
 
-`void StopMusic(float fadeTime)`
+void **StopMusic**(float fadeTime)
 
 * Stops the current music.
 
 # Utility Classes #
 
-`class Vector2`
+class **Vector2**
 
 * A simple 2D vector class that supports basic vector math operations that is used in many API functions.
 
-`class Bounds2`
+class **Bounds2**
 
 * A simple axis-aligned 2D bounding rectangle that is used in a few API functions.
 
-`class Color`
+class **Color**
 
 * A data structure representing a 32-bit RGBA color that is used in many API functions. 
 * The class also contains static members for all of the built-in .NET colors, e.g. Color.CornflowerBlue and others.
@@ -191,8 +191,8 @@ If you hit Alt+Enter while the game is running it will toggle between windowed a
 
 Most of the asset types supported should be fairly obvious, but this framework also supports something ambiguously called a "resizable texture". Sometimes also called "nine-patches" or "border textures", these are textures that are divided into nine areas (specified at load time as numerical offsets from the edges) so that they can be drawn at different sizes without distorting the edges. The following example shows a resizable texture for a button created and drawn with the following code:
 
-```
-ResizableTexture button = Engine.LoadResizableTexture("button.png", 20, 20, 20, 40);`
+```C#
+ResizableTexture button = Engine.LoadResizableTexture("button.png", 20, 20, 20, 40);
 Engine.DrawResizableTexture(button, new Bounds2(10, 40, 50, 80));
 Engine.DrawResizableTexture(button, new Bounds2(70, 20, 100, 60));
 Engine.DrawResizableTexture(button, new Bounds2(180, 10, 70, 100));
