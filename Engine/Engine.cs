@@ -1,6 +1,7 @@
 ﻿using SDL2;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 static partial class Engine
 {
@@ -22,6 +23,37 @@ static partial class Engine
 
     private static void Start()
     {
+        // ======================================================================================
+        // Copy assets and libraries into the working directory
+        // ======================================================================================
+
+        string targetBase = Directory.GetCurrentDirectory();
+        string sourceBase = targetBase;
+        
+        while (true)
+        {
+            // Figure out if we're in the project's base directory:
+            if (File.Exists(Path.Combine(sourceBase, "Game.sln")) &&
+                Directory.Exists(Path.Combine(sourceBase, "Assets")) &&
+                Directory.Exists(Path.Combine(sourceBase, "Libraries")))
+            {
+                MirrorDirectory(Path.Combine(sourceBase, "Assets"), Path.Combine(targetBase, "Assets"), true);
+                MirrorDirectory(Path.Combine(sourceBase, "Libraries"), Path.Combine(targetBase, ""), false);
+                break;
+            }
+
+            // Try again in the parent directory, stopping when we run out of places to look:
+            DirectoryInfo parent = Directory.GetParent(sourceBase);
+            if (parent == null)
+            {
+                break;
+            }
+            else
+            {
+                sourceBase = parent.FullName;
+            }
+        }
+
         // ======================================================================================
         // Initialize SDL
         // ======================================================================================
@@ -128,6 +160,36 @@ static partial class Engine
 
             // Process post-update engine logic:
             FreeUnusedTextCacheEntries();
+        }
+    }
+
+    private static void MirrorDirectory(string sourceDirectory, string targetDirectory, bool deleteUnusedFiles)
+    {
+        // Ensure the target directory exists, as otherwise our attempt to enumerate its files will fail:
+        Directory.CreateDirectory(targetDirectory);
+
+        // Copy new files from source that don't exist or are out of date in target:
+        foreach (string sourceFile in Directory.GetFiles(sourceDirectory, "*", SearchOption.AllDirectories))
+        {
+            string targetFile = sourceFile.Replace(sourceDirectory, targetDirectory);
+            if (!File.Exists(targetFile) || File.GetLastWriteTime(targetFile) < File.GetLastWriteTime(sourceFile))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(targetFile));
+                File.Copy(sourceFile, targetFile, true);
+            }
+        }
+
+        // Delete old files in target that no longer exist in source:
+        if (deleteUnusedFiles)
+        {
+            foreach (string targetFile in Directory.GetFiles(targetDirectory, "*", SearchOption.AllDirectories))
+            {
+                string sourceFile = targetFile.Replace(targetDirectory, sourceDirectory);
+                if (!File.Exists(sourceFile))
+                {
+                    File.Delete(targetFile);
+                }
+            }
         }
     }
 }
