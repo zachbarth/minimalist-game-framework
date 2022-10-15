@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Game": {
+      "commandName": "Executable",
+      "executablePath": "../../../Runtime/dotnet.exe",
+      "commandLineArgs": "Game.dll"
+    }
+  }
+}
