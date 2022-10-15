@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 
 static partial class Engine
 {
@@ -23,6 +24,12 @@ static partial class Engine
 
     private static void Start()
     {
+        // ======================================================================================
+        // Hide the console window as quickly as possible
+        // ======================================================================================
+
+        ShowWindow(GetConsoleWindow(), 0);
+
         // ======================================================================================
         // Copy assets and libraries into the working directory
         // ======================================================================================
@@ -192,4 +199,10 @@ static partial class Engine
             }
         }
     }
+
+    [DllImport("kernel32.dll")]
+    private static extern IntPtr GetConsoleWindow();
+
+    [DllImport("user32.dll")]
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 }
