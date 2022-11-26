@@ -28,7 +28,10 @@ static partial class Engine
         // Hide the console window as quickly as possible
         // ======================================================================================
 
-        ShowWindow(GetConsoleWindow(), 0);
+        if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            ShowWindow(GetConsoleWindow(), 0);
+        }
 
         // ======================================================================================
         // Copy assets and libraries into the working directory
