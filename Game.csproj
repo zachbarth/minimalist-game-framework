@@ -26,12 +26,15 @@
     <Compile Remove="Assets\**" />
     <Compile Remove="Docs\**" />
     <Compile Remove="Libraries\**" />
+    <Compile Remove="Runtime\**" />
     <EmbeddedResource Remove="Assets\**" />
     <EmbeddedResource Remove="Docs\**" />
     <EmbeddedResource Remove="Libraries\**" />
+    <EmbeddedResource Remove="Runtime\**" />
     <None Remove="Assets\**" />
     <None Remove="Docs\**" />
     <None Remove="Libraries\**" />
+    <None Remove="Runtime\**" />
   </ItemGroup>
 
   <ItemGroup>
