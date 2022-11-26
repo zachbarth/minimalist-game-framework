@@ -1,6 +1,6 @@
 # Minimalist Game Framework #
 
-This is a minimalist game framework in the style of the "game engine" we use at [Zachtronics](http://www.zachtronics.com). It is a thin layer over [SDL2](http://wiki.libsdl.org/FrontPage) that encourages you to modify and extend the framework to suit your needs and preferences.
+This is a minimalist game framework in the style of the "game engine" we use at [Zachtronics](http://www.zachtronics.com). It is a thin layer over [SDL2](http://wiki.libsdl.org/FrontPage) that encourages you to modify and extend the framework to suit your needs and preferences. There is also a [Java version](https://github.com/zachbarth/minimalist-game-framework-java) of this framework.
 
 # Getting Started #
 
