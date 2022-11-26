@@ -28,7 +28,7 @@ static partial class Engine
         // Hide the console window as quickly as possible
         // ======================================================================================
 
-        if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             ShowWindow(GetConsoleWindow(), 0);
         }
@@ -49,6 +49,24 @@ static partial class Engine
             {
                 MirrorDirectory(Path.Combine(sourceBase, "Assets"), Path.Combine(targetBase, "Assets"), true);
                 MirrorDirectory(Path.Combine(sourceBase, "Libraries"), Path.Combine(targetBase, ""), false);
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    // If we're running on Mac we need to manually create some symbolic
+                    // links in order for the SDL2 libraries to work correctly.
+
+                    void createLink(string link, string target)
+                    {
+                        string args = string.Format("-sf {0} {1}", target, link);
+                        System.Diagnostics.Process.Start("ln", args);
+                    }
+
+                    createLink("libSDL2", "SDL2.framework/SDL2");
+                    createLink("libSDL2_image", "SDL2_image.framework/SDL2_image");
+                    createLink("libSDL2_mixer", "SDL2_mixer.framework/SDL2_mixer");
+                    createLink("libSDL2_ttf", "SDL2_ttf.framework/SDL2_ttf");
+                }
+
                 break;
             }
 
