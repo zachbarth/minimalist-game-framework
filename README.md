@@ -41,18 +41,32 @@ class Game
     {
         // Draw the background:
         Engine.DrawTexture(texBackground, Vector2.Zero);
-        
-        // Use the gamepad to control the knight, with a small "deadzone" applied to the analog stick:
-        Vector2 leftStick = Engine.GetGamepadAxis(0, GamepadAxis.LeftStick);
-        bool knightIdle = leftStick.Length() < 0.3f;
-        if (!knightIdle)
+
+        // Use the keyboard to control the knight:
+        Vector2 moveOffset = Vector2.Zero;
+        if (Engine.GetKeyHeld(Key.Left))
         {
-            knightPosition += leftStick * Engine.TimeDelta * WalkSpeed;
-            knightFaceLeft = leftStick.X < 0;
+            moveOffset.X -= 1;
+            knightFaceLeft = true;
         }
+        if (Engine.GetKeyHeld(Key.Right))
+        {
+            moveOffset.X += 1;
+            knightFaceLeft = false;
+        }
+        if (Engine.GetKeyHeld(Key.Up))
+        {
+            moveOffset.Y -= 1;
+        }
+        if (Engine.GetKeyHeld(Key.Down))
+        {
+            moveOffset.Y += 1;
+        }
+        knightPosition += moveOffset * WalkSpeed * Engine.TimeDelta;
 
         // Advance through the knight's 6-frame animation and select the current frame:
         knightFrameIndex = (knightFrameIndex + Engine.TimeDelta * Framerate) % 6.0f;
+        bool knightIdle = moveOffset.Length() == 0;
         Bounds2 knightFrameBounds = new Bounds2(((int)knightFrameIndex) * 16, knightIdle ? 0 : 16, 16, 16);
 
         // Draw the knight:
